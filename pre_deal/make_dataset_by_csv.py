@@ -7,12 +7,16 @@ import pandas as pd
 
 
 def analy_csv(csv_path, src_path, dest_path):
-    df = pd.read_csv(csv_path)
-    dicLs = df.to_dict(orient='records')  # dicLs是一个list，[{'id':0,'data':5177},{'id':1,'data':1676}...]
+    df = pd.read_csv(csv_path, dtype=str)   # 加上dtype指定类型，否则可能会出现将0032读取成32的情况
+    dicLs = df.to_dict(orient='records', )  # dicLs是一个list，[{'id':0,'data':5177},{'id':1,'data':1676}...]
     i = 0
     for dic in dicLs:
-        img = open(f'../../dataset/{src_path}/{dic["id"]}.jpg', 'rb').read()  # 参数rb的含义是：r代表读取，b代表二进制
-        open(f'../../dataset/{dest_path}/{i}_{dic["data"]}.jpg', 'wb').write(img)
+        print(str(dic['data']))
+        # ../../dataset/pre_train/0.jpg
+        img_src_path = f'../../dataset/{src_path}/{dic["id"]}.jpg'
+        img_dest_path = f'../../dataset/{dest_path}/{i}_{dic["data"]}.jpg'
+        img = open(img_src_path, 'rb').read()  # 参数rb的含义是：r代表读取，b代表二进制
+        open(img_dest_path, 'wb').write(img)
         print(i)
         i += 1
 
